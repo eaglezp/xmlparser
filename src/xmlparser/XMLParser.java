@@ -12,38 +12,41 @@ import java.io.*;
 public class XMLParser {
 
     public static void main(String[] args) throws Exception{
-    	// step 1: 获得dom解析器工厂（工作的作用是用于创建具体的解析器）  
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
-   
-        // step 2:获得具体的dom解析器  
-        DocumentBuilder db = dbf.newDocumentBuilder();  
- 
-        // step3: 解析一个xml文档，获得Document对象（根结点）
+
+    	// step 1: 获得dom解析器工厂
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        // step 2:获得具体的dom解析器
+        DocumentBuilder db = dbf.newDocumentBuilder();
+
         InputStream inputStream = XMLParser.class.getClassLoader().getResourceAsStream("xmlparser/person.xml");
-        String filePath = XMLParser.class.getClassLoader().getResource("xmlparser/person.xml").getPath();
+       /* String filePath = XMLParser.class.getClassLoader().getResource("xmlparser/person.xml").getPath();
         System.out.println(filePath);
         File file = new File(filePath);
-        
+        inputStream = new FileInputStream(file);*/
+
+        // step3:获得Document对象
         Document document = db.parse(inputStream);
-        
-        NodeList plist = document.getElementsByTagName("persons");  
-        for(int i = 0; i < plist.getLength(); i++) {  
-           Element pelement = (Element)plist.item(i);  
+
+        NodeList plist = document.getElementsByTagName("persons");
+        for(int i = 0; i < plist.getLength(); i++) {
+           Element pelement = (Element)plist.item(i);
            NodeList cList = pelement.getElementsByTagName("person");
-           
+
            for(int j=0;j<cList.getLength();j++) {
         	   Element celement = (Element)cList.item(j);
-        	   
-        	   String content = celement.getElementsByTagName("id").item(0).getFirstChild().getNodeValue(); 
-               System.out.println("id:" + content);  
-               content = celement.getElementsByTagName("name").item(0).getFirstChild().getNodeValue();  
-               System.out.println("name:" + content);  
-               content = celement.getElementsByTagName("age").item(0).getFirstChild().getNodeValue();  
-               System.out.println("age:" + content);  
-               System.out.println("--------------------------------------");
-           }  
-         }  
-     }  
+
+        	   int id = Integer.parseInt(celement.getElementsByTagName("id").item(0).getFirstChild().getNodeValue());
+
+               String name = celement.getElementsByTagName("name").item(0).getFirstChild().getNodeValue();
+
+               int age = Integer.parseInt(celement.getElementsByTagName("age").item(0).getFirstChild().getNodeValue());
+
+               //封装对象。。。
+               System.out.println("id:"+id+",name:"+name+",age:"+age);
+           }
+         }
+     }
 
     
 
